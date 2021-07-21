@@ -1,0 +1,34 @@
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
+ @import "@itwin/itwinui-css/scss/variables";
+
+.page-title {
+    padding: $iui-m $iui-m 0 $iui-m;
+}
+
+.title-resource-identifier {
+    color: var(--iui-text-color-muted);
+}
+
+.imodels-table {
+    padding: $iui-m;
+}
+
+.imodel-details-placeholder {
+    margin: $iui-l;
+    font-size: $iui-font-size-title;
+    color: var(--iui-text-color-muted);
+}
+
+.imodel-details-container {
+    width: 100%;
+    display: inline-block;
+}
+
+.imodel-details-component {
+    width: 45%;
+    padding: $iui-m;
+    float: left;
+}
