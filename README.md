@@ -14,7 +14,7 @@ This application is built using components from [@itwin/itwinui-react](https://g
 
 ---
 ## Prerequisites
-In order to run this application user has to have a SPA client with ```imodels:read``` and ```imodels:modify``` scopes and a project that has iModels. Instructions on how to create a SPA client can be found in [this tutorial](https://developer.bentley.com/tutorials/web-application-quick-start#2-register-an-application).
+In order to run this application user has to have a SPA client with ```imodels:read``` and ```imodels:modify``` scopes and a project that has iModels. Instructions on how to create a SPA client can be found in [this tutorial](https://developer.bentley.com/tutorials/web-application-quick-start#3-register-an-application) under section "Register an Application".
 
 ## Run the code
 
