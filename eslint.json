@@ -1,8 +1,5 @@
 {
-    "rules": {
-        "no-shadow": "off",
-        "react/display-name": 0,
-        "@typescript-eslint/consistent-type-definitions": 0,
-        "@typescript-eslint/naming-convention": 0
-    }
+  "rules": {
+    "@typescript-eslint/no-inferrable-types": 0
+  }
 }
