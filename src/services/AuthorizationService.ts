@@ -2,17 +2,16 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { ClientRequestContext } from "@bentley/bentleyjs-core";
-import { BrowserAuthorizationClient, BrowserAuthorizationClientConfiguration } from "@bentley/frontend-authorization-client";
+import { BrowserAuthorizationClient, BrowserAuthorizationClientConfiguration } from "@itwin/browser-authorization";
 
 export class AuthorizationService {
-  private accessToken: string | undefined = undefined;
+  private _authorizationClient: BrowserAuthorizationClient | undefined;
 
   private async authorize(): Promise<void> {
     if (!process.env.IMJS_AUTH_CLIENT_ID || !process.env.IMJS_AUTH_REDIRECT_URL || !process.env.IMJS_AUTH_CLIENT_SCOPES)
       throw new Error("Missing configuration. Keys IMJS_AUTH_CLIENT_ID, IMJS_AUTH_REDIRECT_URL, IMJS_AUTH_CLIENT_SCOPES must have values. Please provide them in the .env file.");
 
-    const oidcConfiguration: BrowserAuthorizationClientConfiguration = {
+    const authorizationClientConfiguration: BrowserAuthorizationClientConfiguration = {
       authority: process.env.IMJS_AUTH_CLIENT_AUTHORITY,
       clientId: process.env.IMJS_AUTH_CLIENT_ID,
       redirectUri: process.env.IMJS_AUTH_REDIRECT_URL,
@@ -21,16 +20,14 @@ export class AuthorizationService {
       responseType: "code",
     };
 
-    const oidcClient = new BrowserAuthorizationClient(oidcConfiguration);
-    oidcClient.onUserStateChanged.addListener((token) => this.accessToken = token?.toTokenString() ?? "");
-    await oidcClient.signIn(new ClientRequestContext());
+    this._authorizationClient = new BrowserAuthorizationClient(authorizationClientConfiguration);
+    await this._authorizationClient.signIn();
   }
 
   public async getAccessToken(): Promise<string> {
-    if (this.accessToken)
-      return this.accessToken;
+    if (!this._authorizationClient)
+      await this.authorize();
 
-    await this.authorize();
-    return this.accessToken!;
+    return this._authorizationClient!.getAccessToken();
   }
 }
