@@ -3,7 +3,7 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import React from "react";
-import { BrowserAuthorizationCallbackHandler } from "@bentley/frontend-authorization-client";
+import { BrowserAuthorizationCallbackHandler } from "@itwin/browser-authorization";
 import ReactDOM from "react-dom";
 import App from "./App";
 
