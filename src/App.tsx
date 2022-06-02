@@ -3,7 +3,8 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import React, { useCallback, useEffect, useState } from "react";
-import { IModelsService } from "./services/IModelsService";
+import { iModelsService } from "./services/IModelsService";
+import { appConfig } from "./services/AppConfigService";
 import { APIEntity, Changeset } from "./Models";
 import { Button, Headline, Table, Title, toaster } from "@itwin/itwinui-react";
 import { CellProps } from "react-table";
@@ -12,8 +13,6 @@ import NamedVersionDetails from "./NamedVersionDetails";
 import "./App.scss";
 
 const App: React.FC = () => {
-  const iModelsService = new IModelsService();
-
   const [areiModelsLoading, setAreiModelsLoading] = useState<boolean>(true);
   const [iModels, setiModels] = useState<APIEntity[]>([]);
   const [selectediModel, setSelectediModel] = useState<APIEntity | undefined>(undefined);
@@ -25,10 +24,7 @@ const App: React.FC = () => {
   const [changesets, setChangesets] = useState<Changeset[]>([]);
 
   useEffect(() => {
-    if (!process.env.IMJS_PROJECT_ID)
-      throw new Error("Missing configuration. Key IMJS_PROJECT_ID must have a value. Please edit the .env file.");
-
-    iModelsService.getiModels(process.env.IMJS_PROJECT_ID)
+    iModelsService.getiModels(appConfig.projectId)
       .then((queriediModels) => setiModels(queriediModels))
       .catch((e) => toaster.negative(`iModels query failed with status code ${e.message}.`))
       .finally(() => setAreiModelsLoading(false));
@@ -99,7 +95,6 @@ const App: React.FC = () => {
         <div className="imodel-details-component">
           <Title>iModel &quot;<span className="title-resource-identifier">{selectediModel.displayName}</span>&quot; Changesets</Title>
           <ChangesetDetails
-            iModelsService={iModelsService}
             changesets={changesets}
             isLoading={areChangesetsLoading}
             iModelId={selectediModel.id}
@@ -114,7 +109,7 @@ const App: React.FC = () => {
       </div>;
 
   return <div>
-    <Headline className="page-title">iModels for project <span className="title-resource-identifier">{process.env.IMJS_PROJECT_ID}</span></Headline>
+    <Headline className="page-title">iModels for project <span className="title-resource-identifier">{appConfig.projectId}</span></Headline>
     <Table
       className="imodels-table"
       columns={columns}

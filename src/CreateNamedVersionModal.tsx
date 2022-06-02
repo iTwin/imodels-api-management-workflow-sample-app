@@ -4,11 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 import React, { useState } from "react";
 import { Button, LabeledInput, Modal, ModalButtonBar, toaster } from "@itwin/itwinui-react";
-import { IModelsService } from "./services/IModelsService";
+import { iModelsService } from "./services/IModelsService";
 import "./CreateNamedVersionModal.scss";
 
 type CreateNamedVersionModalProps = {
-  iModelsService: IModelsService;
   iModelId: string;
   changesetIndex: number;
   changesetId: string;
@@ -16,7 +15,6 @@ type CreateNamedVersionModalProps = {
 };
 
 const CreateNamedVersionModal: React.FC<CreateNamedVersionModalProps> = ({
-  iModelsService,
   iModelId,
   changesetIndex,
   changesetId,

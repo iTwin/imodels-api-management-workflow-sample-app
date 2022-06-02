@@ -2,7 +2,8 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { AuthorizationService } from "./AuthorizationService";
+import { authorizationService } from "./AuthorizationService";
+import { appConfig } from "./AppConfigService";
 import { APIEntity, Changeset, ChangesetsResponse, CollectionResponse, iModel, iModelsResponse, NamedVersion, NamedVersionCreateRequest, NamedVersionResponse, NamedVersionsResponse } from "../Models";
 
 enum PreferReturn {
@@ -10,23 +11,12 @@ enum PreferReturn {
   Representation = "representation"
 }
 
-export class IModelsService {
-  private _authorizationService: AuthorizationService;
-  private _iModelsAPIURL: string;
-
-  constructor() {
-    if (!process.env.IMJS_IMODELS_API_URL)
-      throw new Error("Missing configuration. Key IMJS_IMODELS_API_URL must have a value. Please provide it in the .env file.");
-
-    this._authorizationService = new AuthorizationService();
-    this._iModelsAPIURL = process.env.IMJS_IMODELS_API_URL;
-  }
-
+class IModelsService {
   // Returns minimal representation for all iModels of a project.
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-project-imodels/
   public async getiModels(projectId: string): Promise<iModel[]> {
     return this.getEntitiesInPages(
-      this._iModelsAPIURL,
+      appConfig.iModelsApiUrl,
       `?projectId=${projectId}`,
       PreferReturn.Minimal,
       (response: iModelsResponse) => response.iModels);
@@ -36,7 +26,7 @@ export class IModelsService {
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-named-versions/
   public async getNamedVersions(iModelId: string): Promise<NamedVersion[]> {
     return this.getEntitiesInPages(
-      `${this._iModelsAPIURL}/${iModelId}/namedversions`,
+      `${appConfig.iModelsApiUrl}/${iModelId}/namedversions`,
       undefined,
       PreferReturn.Minimal,
       (response: NamedVersionsResponse) => response.namedVersions);
@@ -46,7 +36,7 @@ export class IModelsService {
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
   public async getChangesets(iModelId: string): Promise<Changeset[]> {
     const changesets = await this.getEntitiesInPages(
-      `${this._iModelsAPIURL}/${iModelId}/changesets`,
+      `${appConfig.iModelsApiUrl}/${iModelId}/changesets`,
       undefined,
       PreferReturn.Representation,
       (response: ChangesetsResponse) => response.changesets);
@@ -74,7 +64,7 @@ export class IModelsService {
     };
 
     const namedVersionCreateRequestBody = JSON.stringify(namedVersionToCreate);
-    await this.sendPostRequest(`${this._iModelsAPIURL}/${iModelId}/namedversions`, namedVersionCreateRequestBody);
+    await this.sendPostRequest(`${appConfig.iModelsApiUrl}/${iModelId}/namedversions`, namedVersionCreateRequestBody);
   }
 
   // All iModels API collection requests support paging with $skip and $top URL parameters.
@@ -116,7 +106,7 @@ export class IModelsService {
   }
 
   private async sendGetRequest<TResponse>(url: string, preferReturn: PreferReturn | undefined = undefined): Promise<TResponse> {
-    const headers: HeadersInit = { Authorization: await this._authorizationService.getAccessToken() };
+    const headers: HeadersInit = { Authorization: await authorizationService.getAccessToken() };
     // API entity collection requests support Prefer header which allows user to specify the response
     // type - whether it should only contain minimal metadata about entities or full information.
     // Documentation on Prefer headers can be found under any collection operation documentation,
@@ -133,7 +123,7 @@ export class IModelsService {
   }
 
   private async sendPostRequest<TResponse>(url: string, body: string): Promise<TResponse> {
-    const headers: HeadersInit = { Authorization: await this._authorizationService.getAccessToken() };
+    const headers: HeadersInit = { Authorization: await authorizationService.getAccessToken() };
     const response: Response = await fetch(url, { method: "POST", body, headers });
     if (!response.ok)
       return this.handleFaultyResponse(response);
@@ -149,3 +139,5 @@ export class IModelsService {
     return Promise.reject(new Error(response.status.toString()));
   }
 }
+
+export const iModelsService = new IModelsService();
