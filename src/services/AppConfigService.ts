@@ -31,7 +31,6 @@ class AppConfig {
       throw new Error(`Missing configuration: key ${key} must have a value. Please provide it in the .env file.`);
     return value;
   }
-
 }
 
 export const appConfig = new AppConfig();

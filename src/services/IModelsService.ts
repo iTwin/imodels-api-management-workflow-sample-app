@@ -101,8 +101,8 @@ class IModelsService {
       result = result.concat(responsePropertyAccessor(response));
       pageLink = response._links.next?.href;
 
-      // iModels API will always return a next page link if there are remaining entities.
-      // If the next page link is not returned it means that all entities have been queried.
+    // iModels API will always return a next page link if there are remaining entities.
+    // If the next page link is not returned it means that all entities have been queried.
     } while (pageLink);
 
     return result;
