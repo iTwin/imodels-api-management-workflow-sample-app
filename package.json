@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@itwin/browser-authorization": "^0.4.0",
+    "@itwin/core-bentley": "^3.2.0",
+    "@itwin/browser-authorization": "^0.5.1",
     "@itwin/itwinui-css": "^0.20.2",
     "@itwin/itwinui-react": "^1.7.2",
-    "@types/node": "^12.20.15",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.7",
     "react": "^17.0.2",
@@ -14,7 +14,7 @@
     "typescript": "^4.3.2"
   },
   "devDependencies": {
-    "@bentley/react-scripts": "^4.0.3",
+    "@bentley/react-scripts": "^4.0.7",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.28.0"
