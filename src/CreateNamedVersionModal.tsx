@@ -2,8 +2,9 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import React, { useState } from "react";
 import { Button, LabeledInput, Modal, ModalButtonBar, toaster } from "@itwin/itwinui-react";
+import React, { useState } from "react";
+
 import { iModelsService } from "./services/IModelsService";
 import "./CreateNamedVersionModal.scss";
 

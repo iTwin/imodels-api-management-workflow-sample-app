@@ -2,14 +2,15 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import React, { useCallback, useEffect, useState } from "react";
-import { iModelsService } from "./services/IModelsService";
-import { appConfig } from "./services/AppConfigService";
-import { APIEntity, Changeset } from "./Models";
 import { Button, Headline, Table, Title, toaster } from "@itwin/itwinui-react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CellProps } from "react-table";
+
 import ChangesetDetails from "./ChangesetDetails";
+import { APIEntity, Changeset } from "./Models";
 import NamedVersionDetails from "./NamedVersionDetails";
+import { appConfig } from "./services/AppConfigService";
+import { iModelsService } from "./services/IModelsService";
 import "./App.scss";
 
 const App: React.FC = () => {

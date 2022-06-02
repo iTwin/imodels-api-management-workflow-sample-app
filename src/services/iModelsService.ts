@@ -2,9 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { authorizationService } from "./AuthorizationService";
-import { appConfig } from "./AppConfigService";
 import { APIEntity, Changeset, ChangesetsResponse, CollectionResponse, iModel, iModelsResponse, NamedVersion, NamedVersionCreateRequest, NamedVersionResponse, NamedVersionsResponse } from "../Models";
+
+import { appConfig } from "./AppConfigService";
+import { authorizationService } from "./AuthorizationService";
 
 enum PreferReturn {
   Minimal = "minimal",

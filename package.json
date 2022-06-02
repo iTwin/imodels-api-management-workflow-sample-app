@@ -16,13 +16,15 @@
   "devDependencies": {
     "@bentley/react-scripts": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.28.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/**/*.{ts,tsx} 1>&2"
+    "lint": "eslint ./src/**/*.{ts,tsx} 1>&2",
+    "lint-fix": "eslint ./src/**/*.{ts,tsx} 1>&2 --fix"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
