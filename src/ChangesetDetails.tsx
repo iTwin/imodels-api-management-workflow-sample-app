@@ -2,11 +2,12 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import React from "react";
-import { Changeset } from "./Models";
 import { Table } from "@itwin/itwinui-react";
+import React from "react";
 import { CellProps } from "react-table";
+
 import CreateNamedVersionModal from "./CreateNamedVersionModal";
+import { Changeset } from "./Models";
 
 type ChangesetDetailsProps = {
   changesets: Changeset[];
@@ -15,7 +16,13 @@ type ChangesetDetailsProps = {
   onNamedVersionCreated: () => void;
 };
 
-const ChangesetDetails = ({ changesets, isLoading, iModelId, onNamedVersionCreated }: ChangesetDetailsProps) => {
+const ChangesetDetails: React.FC<ChangesetDetailsProps> = ({
+  changesets,
+  isLoading,
+  iModelId,
+  onNamedVersionCreated
+}: ChangesetDetailsProps
+) => {
   const columns = [
     {
       Header: "Id",

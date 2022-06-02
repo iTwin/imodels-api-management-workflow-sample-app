@@ -19,8 +19,8 @@ In order to run this application user has to have a SPA client with ```imodels:r
 ## Run the code
 
 1\. Configure the application by entering the appropriate values in ```.env``` file:
-- `IMJS_AUTH_CLIENT_ID`: Enter the ClientID for the client you registered.
-- `IMJS_PROJECT_ID`: Enter the project id that the application will display iModels for.
+- `REACT_APP_AUTH_CLIENT_ID`: Enter the ClientID for the client you registered.
+- `REACT_APP_PROJECT_ID`: Enter the project id that the application will display iModels for.
 
 The rest of the configuration has default values that do not have to be changed.
 
@@ -32,3 +32,13 @@ npm install
 ```
 npm start
 ```
+
+## Client Packages
+
+This application defines [IModelsService class](./src/services/iModelsService.ts) to wrap API calls. It supports only a few operations, is very minimal and is intended to demonstrate the basics on how to consume the iModels API.
+
+Open source TypeScript client packages are available for iModels API:
+- @itwin/imodels-client-management - [NPM registry](https://www.npmjs.com/package/@itwin/imodels-client-management), [documentation](https://github.com/iTwin/imodels-clients/blob/main/docs/IModelsClientManagement.md)
+- @itwin/imodels-client-authoring - [NPM registry](https://www.npmjs.com/package/@itwin/imodels-client-authoring), [documentation](https://github.com/iTwin/imodels-clients/blob/main/docs/IModelsClientAuthoring.md)
+
+Please check the [general documentation](https://github.com/iTwin/imodels-clients/tree/main/docs) for explanation on the difference between the packages.
