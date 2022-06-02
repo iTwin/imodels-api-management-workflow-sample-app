@@ -16,13 +16,13 @@ class AppConfig {
 
   constructor() {
     this.auth = {
-      authority: this.getConfigValue("IMJS_AUTH_CLIENT_AUTHORITY"),
-      redirectUrl: this.getConfigValue("IMJS_AUTH_REDIRECT_URL"),
-      scopes: this.getConfigValue("IMJS_AUTH_CLIENT_SCOPES"),
-      clientId: this.getConfigValue("IMJS_AUTH_CLIENT_ID")
+      authority: this.getConfigValue("REACT_APP_AUTH_CLIENT_AUTHORITY"),
+      redirectUrl: this.getConfigValue("REACT_APP_AUTH_REDIRECT_URL"),
+      scopes: this.getConfigValue("REACT_APP_AUTH_CLIENT_SCOPES"),
+      clientId: this.getConfigValue("REACT_APP_AUTH_CLIENT_ID")
     };
-    this.iModelsApiUrl = this.getConfigValue("IMJS_IMODELS_API_URL");
-    this.projectId = this.getConfigValue("IMJS_PROJECT_ID");
+    this.iModelsApiUrl = this.getConfigValue("REACT_APP_IMODELS_API_URL");
+    this.projectId = this.getConfigValue("REACT_APP_PROJECT_ID");
   }
 
   private getConfigValue(key: string): string {

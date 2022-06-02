@@ -19,8 +19,8 @@ In order to run this application user has to have a SPA client with ```imodels:r
 ## Run the code
 
 1\. Configure the application by entering the appropriate values in ```.env``` file:
-- `IMJS_AUTH_CLIENT_ID`: Enter the ClientID for the client you registered.
-- `IMJS_PROJECT_ID`: Enter the project id that the application will display iModels for.
+- `REACT_APP_AUTH_CLIENT_ID`: Enter the ClientID for the client you registered.
+- `REACT_APP_PROJECT_ID`: Enter the project id that the application will display iModels for.
 
 The rest of the configuration has default values that do not have to be changed.
 
