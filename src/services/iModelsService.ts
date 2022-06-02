@@ -12,6 +12,8 @@ enum PreferReturn {
   Representation = "representation"
 }
 
+// Service that wraps iModels API calls.
+// IMPORTANT: please note that iModels API client packages exist. See the README.md file in repository root.
 class IModelsService {
   // Returns minimal representation for all iModels of a project.
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-project-imodels/

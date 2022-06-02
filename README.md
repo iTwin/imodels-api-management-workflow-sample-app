@@ -32,3 +32,13 @@ npm install
 ```
 npm start
 ```
+
+## Client Packages
+
+This application defines [IModelsService class](./src/services/iModelsService.ts) to wrap API calls. It supports only a few operations, is very minimal and is intended to demonstrate the basics on how to consume the iModels API.
+
+iModels API consumers can use the existing API client packages written in TypeScript to avoid writing the API wrappers themselves:
+- @itwin/imodels-client-management - [NPM registry](https://www.npmjs.com/package/@itwin/imodels-client-management), [documentation](https://github.com/iTwin/imodels-clients/blob/main/docs/IModelsClientManagement.md)
+- @itwin/imodels-client-authoring - [NPM registry](https://www.npmjs.com/package/@itwin/imodels-client-authoring), [documentation](https://github.com/iTwin/imodels-clients/blob/main/docs/IModelsClientAuthoring.md)
+
+Please check the [general documentation](https://github.com/iTwin/imodels-clients/tree/main/docs) for explanation on the difference between the packages.
