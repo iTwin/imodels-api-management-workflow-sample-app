@@ -4,17 +4,24 @@
  *--------------------------------------------------------------------------------------------*/
 import React, { useState } from "react";
 import { Button, LabeledInput, Modal, ModalButtonBar, toaster } from "@itwin/itwinui-react";
-import { iModelsService } from "./services/iModelsService";
+import { IModelsService } from "./services/IModelsService";
 import "./CreateNamedVersionModal.scss";
 
 type CreateNamedVersionModalProps = {
+  iModelsService: IModelsService;
   iModelId: string;
   changesetIndex: number;
   changesetId: string;
   onNamedVersionCreated: () => void;
 };
 
-const CreateNamedVersionModal = ({ iModelId, changesetIndex, changesetId, onNamedVersionCreated }: CreateNamedVersionModalProps) => {
+const CreateNamedVersionModal: React.FC<CreateNamedVersionModalProps> = ({
+  iModelsService,
+  iModelId,
+  changesetIndex,
+  changesetId,
+  onNamedVersionCreated
+}: CreateNamedVersionModalProps) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [versionName, setVersionName] = useState<string>(`Milestone ${changesetIndex}`);
   const [versionDescription, setVersionDescription] = useState<string | undefined>(undefined);

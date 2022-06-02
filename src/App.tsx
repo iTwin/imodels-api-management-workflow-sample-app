@@ -3,7 +3,7 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import React, { useCallback, useEffect, useState } from "react";
-import { iModelsService } from "./services/iModelsService";
+import { IModelsService } from "./services/IModelsService";
 import { APIEntity, Changeset } from "./Models";
 import { Button, Headline, Table, Title, toaster } from "@itwin/itwinui-react";
 import { CellProps } from "react-table";
@@ -11,7 +11,9 @@ import ChangesetDetails from "./ChangesetDetails";
 import NamedVersionDetails from "./NamedVersionDetails";
 import "./App.scss";
 
-const App = () => {
+const App: React.FC = () => {
+  const iModelsService = new IModelsService();
+
   const [areiModelsLoading, setAreiModelsLoading] = useState<boolean>(true);
   const [iModels, setiModels] = useState<APIEntity[]>([]);
   const [selectediModel, setSelectediModel] = useState<APIEntity | undefined>(undefined);
@@ -97,6 +99,7 @@ const App = () => {
         <div className="imodel-details-component">
           <Title>iModel &quot;<span className="title-resource-identifier">{selectediModel.displayName}</span>&quot; Changesets</Title>
           <ChangesetDetails
+            iModelsService={iModelsService}
             changesets={changesets}
             isLoading={areChangesetsLoading}
             iModelId={selectediModel.id}

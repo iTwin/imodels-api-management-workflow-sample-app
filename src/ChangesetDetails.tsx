@@ -7,15 +7,24 @@ import { Changeset } from "./Models";
 import { Table } from "@itwin/itwinui-react";
 import { CellProps } from "react-table";
 import CreateNamedVersionModal from "./CreateNamedVersionModal";
+import { IModelsService } from "./services/IModelsService";
 
 type ChangesetDetailsProps = {
+  iModelsService: IModelsService;
   changesets: Changeset[];
   isLoading: boolean;
   iModelId: string;
   onNamedVersionCreated: () => void;
 };
 
-const ChangesetDetails = ({ changesets, isLoading, iModelId, onNamedVersionCreated }: ChangesetDetailsProps) => {
+const ChangesetDetails: React.FC<ChangesetDetailsProps> = ({
+  iModelsService,
+  changesets,
+  isLoading,
+  iModelId,
+  onNamedVersionCreated
+}: ChangesetDetailsProps
+) => {
   const columns = [
     {
       Header: "Id",
@@ -39,6 +48,7 @@ const ChangesetDetails = ({ changesets, isLoading, iModelId, onNamedVersionCreat
             return props.row.original.namedVersion
               ? <span>{props.row.original.namedVersion.displayName}</span>
               : <CreateNamedVersionModal
+                iModelsService={iModelsService}
                 iModelId={iModelId}
                 changesetIndex={props.row.original.index}
                 changesetId={props.row.original.id}

@@ -11,7 +11,10 @@ type NamedVersionDetailsProps = {
   isLoading: boolean;
 };
 
-const NamedVersionDetails = ({ namedVersions, isLoading }: NamedVersionDetailsProps) => {
+const NamedVersionDetails: React.FC<NamedVersionDetailsProps> = ({
+  namedVersions,
+  isLoading
+}: NamedVersionDetailsProps) => {
   const columns = [
     {
       Header: "Id",

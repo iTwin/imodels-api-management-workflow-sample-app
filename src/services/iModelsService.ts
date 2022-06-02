@@ -10,15 +10,23 @@ enum PreferReturn {
   Representation = "representation"
 }
 
-export class iModelsService {
-  private static _authorizationService = new AuthorizationService();
-  private static _iModelsAPIURL = "https://api.bentley.com/imodels";
+export class IModelsService {
+  private _authorizationService: AuthorizationService;
+  private _iModelsAPIURL: string;
+
+  constructor() {
+    if (!process.env.IMJS_IMODELS_API_URL)
+      throw new Error("Missing configuration. Key IMJS_IMODELS_API_URL must have a value. Please provide it in the .env file.");
+
+    this._authorizationService = new AuthorizationService();
+    this._iModelsAPIURL = process.env.IMJS_IMODELS_API_URL;
+  }
 
   // Returns minimal representation for all iModels of a project.
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-project-imodels/
-  public static async getiModels(projectId: string): Promise<iModel[]> {
+  public async getiModels(projectId: string): Promise<iModel[]> {
     return this.getEntitiesInPages(
-      iModelsService._iModelsAPIURL,
+      this._iModelsAPIURL,
       `?projectId=${projectId}`,
       PreferReturn.Minimal,
       (response: iModelsResponse) => response.iModels);
@@ -26,9 +34,9 @@ export class iModelsService {
 
   // Returns minimal representation for all Named Versions of an iModel.
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-named-versions/
-  public static async getNamedVersions(iModelId: string): Promise<NamedVersion[]> {
+  public async getNamedVersions(iModelId: string): Promise<NamedVersion[]> {
     return this.getEntitiesInPages(
-      `${iModelsService._iModelsAPIURL}/${iModelId}/namedversions`,
+      `${this._iModelsAPIURL}/${iModelId}/namedversions`,
       undefined,
       PreferReturn.Minimal,
       (response: NamedVersionsResponse) => response.namedVersions);
@@ -36,9 +44,9 @@ export class iModelsService {
 
   // Returns full representation for all Changesets of an iModel.
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
-  public static async getChangesets(iModelId: string): Promise<Changeset[]> {
+  public async getChangesets(iModelId: string): Promise<Changeset[]> {
     const changesets = await this.getEntitiesInPages(
-      `${iModelsService._iModelsAPIURL}/${iModelId}/changesets`,
+      `${this._iModelsAPIURL}/${iModelId}/changesets`,
       undefined,
       PreferReturn.Representation,
       (response: ChangesetsResponse) => response.changesets);
@@ -57,7 +65,7 @@ export class iModelsService {
 
   // Creates a new Named Version for a specified iModel with specified properties.
   // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/create-imodel-named-version/
-  public static async createNamedVersion(iModelId: string, changesetId: string | undefined, namedVersionName: string, namedVersionDescription: string | undefined): Promise<void> {
+  public async createNamedVersion(iModelId: string, changesetId: string | undefined, namedVersionName: string, namedVersionDescription: string | undefined): Promise<void> {
     const namedVersionToCreate: NamedVersionCreateRequest =
     {
       name: namedVersionName,
@@ -66,7 +74,7 @@ export class iModelsService {
     };
 
     const namedVersionCreateRequestBody = JSON.stringify(namedVersionToCreate);
-    await this.sendPostRequest(`${iModelsService._iModelsAPIURL}/${iModelId}/namedversions`, namedVersionCreateRequestBody);
+    await this.sendPostRequest(`${this._iModelsAPIURL}/${iModelId}/namedversions`, namedVersionCreateRequestBody);
   }
 
   // All iModels API collection requests support paging with $skip and $top URL parameters.
@@ -76,7 +84,7 @@ export class iModelsService {
   // This method uses 'next' link to query the next page.
   // Paging documentation can be found under any collection operation documentation,
   // e.g. https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
-  private static async getEntitiesInPages<TResponse extends CollectionResponse, TEntity extends APIEntity>(
+  private async getEntitiesInPages<TResponse extends CollectionResponse, TEntity extends APIEntity>(
     url: string,
     urlParams: string | undefined,
     preferReturn: PreferReturn | undefined,
@@ -100,14 +108,14 @@ export class iModelsService {
       result = result.concat(responsePropertyAccessor(response));
       pageLink = response._links.next?.href;
 
-    // iModels API will always return a next page link if there are remaining entities.
-    // If the next page link is not returned it means that all entities have been queried.
+      // iModels API will always return a next page link if there are remaining entities.
+      // If the next page link is not returned it means that all entities have been queried.
     } while (pageLink);
 
     return result;
   }
 
-  private static async sendGetRequest<TResponse>(url: string, preferReturn: PreferReturn | undefined = undefined): Promise<TResponse> {
+  private async sendGetRequest<TResponse>(url: string, preferReturn: PreferReturn | undefined = undefined): Promise<TResponse> {
     const headers: HeadersInit = { Authorization: await this._authorizationService.getAccessToken() };
     // API entity collection requests support Prefer header which allows user to specify the response
     // type - whether it should only contain minimal metadata about entities or full information.
@@ -124,7 +132,7 @@ export class iModelsService {
     return deserializedResponse;
   }
 
-  private static async sendPostRequest<TResponse>(url: string, body: string): Promise<TResponse> {
+  private async sendPostRequest<TResponse>(url: string, body: string): Promise<TResponse> {
     const headers: HeadersInit = { Authorization: await this._authorizationService.getAccessToken() };
     const response: Response = await fetch(url, { method: "POST", body, headers });
     if (!response.ok)
@@ -134,7 +142,7 @@ export class iModelsService {
     return deserializedResponse;
   }
 
-  private static async handleFaultyResponse<TResponse>(response: Response): Promise<TResponse> {
+  private async handleFaultyResponse<TResponse>(response: Response): Promise<TResponse> {
     // Here we just reject the promise for the sake of simplicity but clients are recommended
     // to have more robust error handling, possibly with retries.
     // Possible errors are documented under 'Responses' section for each operation.
