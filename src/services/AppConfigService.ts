@@ -12,7 +12,7 @@ type AuthConfig = {
 class AppConfig {
   auth: AuthConfig;
   iModelsApiUrl: string;
-  projectId: string;
+  iTwinId: string;
 
   constructor() {
     this.auth = {
@@ -22,7 +22,7 @@ class AppConfig {
       clientId: this.getConfigValue("REACT_APP_AUTH_CLIENT_ID")
     };
     this.iModelsApiUrl = this.getConfigValue("REACT_APP_IMODELS_API_URL");
-    this.projectId = this.getConfigValue("REACT_APP_PROJECT_ID");
+    this.iTwinId = this.getConfigValue("REACT_APP_ITWIN_ID");
   }
 
   private getConfigValue(key: string): string {

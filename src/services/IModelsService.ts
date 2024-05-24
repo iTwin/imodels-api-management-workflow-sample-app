@@ -15,18 +15,18 @@ enum PreferReturn {
 // Service that wraps iModels API calls.
 // IMPORTANT: please note that iModels API client packages exist. See the README.md file in repository root.
 class IModelsService {
-  // Returns minimal representation for all iModels of a project.
-  // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-project-imodels/
-  public async getiModels(projectId: string): Promise<iModel[]> {
+  // Returns minimal representation for all iModels in an iTwin.
+  // Documentation can be found at https://developer.bentley.com/apis/imodels-v2/operations/get-itwin-imodels/
+  public async getiModels(iTwinId: string): Promise<iModel[]> {
     return this.getEntitiesInPages(
       appConfig.iModelsApiUrl,
-      `?projectId=${projectId}`,
+      `?iTwinId=${iTwinId}`,
       PreferReturn.Minimal,
       (response: iModelsResponse) => response.iModels);
   }
 
   // Returns minimal representation for all Named Versions of an iModel.
-  // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-named-versions/
+  // Documentation can be found at https://developer.bentley.com/apis/imodels-v2/operations/get-imodel-named-versions/
   public async getNamedVersions(iModelId: string): Promise<NamedVersion[]> {
     return this.getEntitiesInPages(
       `${appConfig.iModelsApiUrl}/${iModelId}/namedversions`,
@@ -36,7 +36,7 @@ class IModelsService {
   }
 
   // Returns full representation for all Changesets of an iModel.
-  // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
+  // Documentation can be found at https://developer.bentley.com/apis/imodels-v2/operations/get-imodel-changesets/
   public async getChangesets(iModelId: string): Promise<Changeset[]> {
     const changesets = await this.getEntitiesInPages(
       `${appConfig.iModelsApiUrl}/${iModelId}/changesets`,
@@ -57,7 +57,7 @@ class IModelsService {
   }
 
   // Creates a new Named Version for a specified iModel with specified properties.
-  // Documentation can be found at https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/create-imodel-named-version/
+  // Documentation can be found at https://developer.bentley.com/apis/imodels-v2/operations/create-imodel-named-version/
   public async createNamedVersion(iModelId: string, changesetId: string | undefined, namedVersionName: string, namedVersionDescription: string | undefined): Promise<void> {
     const namedVersionToCreate: NamedVersionCreateRequest =
     {
@@ -109,14 +109,7 @@ class IModelsService {
   }
 
   private async sendGetRequest<TResponse>(url: string, preferReturn: PreferReturn | undefined = undefined): Promise<TResponse> {
-    const headers: HeadersInit = { Authorization: await authorizationService.getAccessToken() };
-    // API entity collection requests support Prefer header which allows user to specify the response
-    // type - whether it should only contain minimal metadata about entities or full information.
-    // Documentation on Prefer headers can be found under any collection operation documentation,
-    // e.g. https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
-    if (preferReturn)
-      headers.Prefer = `return=${preferReturn}`;
-
+    const headers: HeadersInit = await this.createHeaders(preferReturn);
     const response: Response = await fetch(url, { method: "GET", headers });
     if (!response.ok)
       return this.handleFaultyResponse(response);
@@ -126,13 +119,29 @@ class IModelsService {
   }
 
   private async sendPostRequest<TResponse>(url: string, body: string): Promise<TResponse> {
-    const headers: HeadersInit = { Authorization: await authorizationService.getAccessToken() };
+    const headers: HeadersInit = await this.createHeaders();
     const response: Response = await fetch(url, { method: "POST", body, headers });
     if (!response.ok)
       return this.handleFaultyResponse(response);
 
     const deserializedResponse: TResponse = await response.json() as TResponse;
     return deserializedResponse;
+  }
+
+  private async createHeaders(preferReturn: PreferReturn | undefined = undefined): Promise<HeadersInit> {
+    const headers: HeadersInit = { 
+      Authorization: await authorizationService.getAccessToken(),
+      Accept: "application/vnd.bentley.itwin-platform.v2+json",
+      "Content-Type": "application/json"
+    };
+    // API entity collection requests support Prefer header which allows user to specify the response
+    // type - whether it should only contain minimal metadata about entities or full information.
+    // Documentation on Prefer headers can be found under any collection operation documentation,
+    // e.g. https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
+    if (preferReturn)
+      headers.Prefer = `return=${preferReturn}`;
+
+    return headers;
   }
 
   private async handleFaultyResponse<TResponse>(response: Response): Promise<TResponse> {

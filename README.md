@@ -2,7 +2,7 @@
 
 ## Overview
 This is a simple React based application that demonstrates iModel management workflow that can be achieved using iModels API:
-- Loading the iModels for a project
+- Loading the iModels for an iTwin
 - Loading Changesets and Named Versions for an iModel
 - Creating a Named Version for a specific Changeset
 
@@ -14,13 +14,13 @@ This application is built using components from [@itwin/itwinui-react](https://g
 
 ---
 ## Prerequisites
-In order to run this application user has to have a SPA client with ```imodels:read``` and ```imodels:modify``` scopes and a project that has iModels. Instructions on how to create a SPA client can be found in [this tutorial](https://developer.bentley.com/tutorials/web-application-quick-start#3-register-an-application) under section "Register an Application".
+In order to run this application user has to have a SPA client with ```itwin-platform``` scope and an iTwin that has iModels. Instructions on how to create a SPA client can be found in [this tutorial](https://developer.bentley.com/tutorials/web-application-quick-start#3-register-an-application) under section "Register an Application".
 
 ## Run the code
 
 1\. Configure the application by entering the appropriate values in ```.env``` file:
 - `REACT_APP_AUTH_CLIENT_ID`: Enter the ClientID for the client you registered.
-- `REACT_APP_PROJECT_ID`: Enter the project id that the application will display iModels for.
+- `REACT_APP_ITWIN_ID`: Enter the iTwin id that the application will display iModels for.
 
 The rest of the configuration has default values that do not have to be changed.
 
