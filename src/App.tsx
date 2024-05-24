@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [changesets, setChangesets] = useState<Changeset[]>([]);
 
   useEffect(() => {
-    iModelsService.getiModels(appConfig.projectId)
+    iModelsService.getiModels(appConfig.iTwinId)
       .then((queriediModels) => setiModels(queriediModels))
       .catch((e) => toaster.negative(`iModels query failed with status code ${e.message}.`))
       .finally(() => setAreiModelsLoading(false));
@@ -110,7 +110,7 @@ const App: React.FC = () => {
       </div>;
 
   return <div>
-    <Headline className="page-title">iModels for project <span className="title-resource-identifier">{appConfig.projectId}</span></Headline>
+    <Headline className="page-title">iModels for iTwin <span className="title-resource-identifier">{appConfig.iTwinId}</span></Headline>
     <Table
       className="imodels-table"
       columns={columns}
