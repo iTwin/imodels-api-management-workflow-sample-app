@@ -6,7 +6,7 @@
 // The models defined below that are used in communication with the API do not fully represent
 // returned responses. Types here define only those properties that are used somewhere in the
 // application for display or other purposes. See the API documentation for full response
-// definitions: https://developer.bentley.com/api-groups/data-management/apis/imodels
+// definitions: https://developer.bentley.com/apis/imodels-v2
 
 export type APIEntity = {
   id: string;

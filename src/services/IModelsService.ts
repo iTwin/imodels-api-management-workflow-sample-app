@@ -76,7 +76,7 @@ class IModelsService {
   // parameter value or they can use links that are returned as a '_links' property value with every collection response.
   // This method uses 'next' link to query the next page.
   // Paging documentation can be found under any collection operation documentation,
-  // e.g. https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
+  // e.g. https://developer.bentley.com/apis/imodels-v2/operations/get-imodel-changesets/
   private async getEntitiesInPages<TResponse extends CollectionResponse, TEntity extends APIEntity>(
     url: string,
     urlParams: string | undefined,
@@ -137,7 +137,7 @@ class IModelsService {
     // API entity collection requests support Prefer header which allows user to specify the response
     // type - whether it should only contain minimal metadata about entities or full information.
     // Documentation on Prefer headers can be found under any collection operation documentation,
-    // e.g. https://developer.bentley.com/api-groups/data-management/apis/imodels/operations/get-imodel-changesets/
+    // e.g. https://developer.bentley.com/apis/imodels-v2/operations/get-imodel-changesets/
     if (preferReturn)
       headers.Prefer = `return=${preferReturn}`;
 
