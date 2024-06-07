@@ -6,7 +6,7 @@ This is a simple React based application that demonstrates iModel management wor
 - Loading Changesets and Named Versions for an iModel
 - Creating a Named Version for a specific Changeset
 
-The communication with the iModels API is implemented in the ```iModelHubService``` class. Full iModels API documentation can be found in [Developer Portal](https://developer.bentley.com/api-groups/data-management/apis/imodels).
+The communication with the iModels API is implemented in the ```iModelHubService``` class. Full iModels API documentation can be found in [Developer Portal](https://developer.bentley.com/apis/imodels-v2).
 
 This application is built using components from [@itwin/itwinui-react](https://github.com/iTwin/iTwinUI-react) library.
 
